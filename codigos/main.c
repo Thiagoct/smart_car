@@ -17,6 +17,8 @@
 #include <avr/eeprom.h>
 
 //Variáveis globais
+uint8_t palheta         = 0;
+uint8_t farol           = 0;
 uint8_t temperatura_ant   = 0;
 uint8_t temperatura_atual;
 uint8_t motor;
@@ -134,6 +136,13 @@ void executa_a_cada_1_segundo(uint32_t TEMPO_100us)
             temperatura_ant = temperatura_atual;
             eeprom_write_byte((uint8_t *)8, temperatura_atual);
         }
+        if(palheta==1)
+            PORTD = PORTD ^ 0b00100000;
+        if(farol == 1)
+            PORTC = PORTC | 0b00001000;
+        else 
+            PORTC = PORTC & 0b11110111;    
+
 
     }
     else if((TEMPO_100us - TEMPO_100us_anterior) >= 5000)
@@ -228,6 +237,22 @@ ISR(USART_RX_vect)
         recebido = eeprom_read_byte((const uint8_t *)8);
         USART_Transmit(recebido);
     }
+    if(recebido == 'p')
+    {
+        palheta = 1;
+    }
+    if(recebido == 'o')
+    {
+        palheta = 0;
+    }
+    if(recebido == 'f')
+    {
+        farol = 1;
+    }
+    if(recebido == 'e')
+    {
+        farol = 0;
+    }
 }  
 
 //******************************************************
@@ -238,7 +263,7 @@ int main(void)
     GLCD_Setup(); //Inicia a biblioteca
     GLCD_SetFont(Font5x8, 5, 8, GLCD_Overwrite); //Seta a fonte utilizada
     GLCD_InvertScreen(); //Inverte o fundo para deixar branco
-    DDRC  &= 0b11111110; 
+    DDRC  &= 0b11110110; 
     //habilitar pinos B[7:1] como saida
     DDRB   = 0b11111110; 
     //habilitar pinos D como entrada
@@ -261,6 +286,7 @@ int main(void)
     PCICR  = 0b00000100;
     PCMSK2 = 0b00010000;//Habilita a PCINT20
     //Configuração das interrupções
+    EIMSK  = 0b00000011;
     EICRA  = 0b00001010;//sinal vindo do ADC0  
     ADCSRA = 0b11110111;
     ADCSRB = 0b00000000;

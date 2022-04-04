@@ -280,10 +280,6 @@ Unique  Id: Node-1890:
 Circuit Id: Node-1890
 <item objectName="Node-1890" labely="-24" vflip="1" labelrot="0" hflip="1" boardPos="-1e+06,-1e+06" valLabely="0" y="-424" circPos="0,0" itemtype="Node" id="Node-1890" valLabRot="0" x="40" valLabelx="0" mainComp="false" rotation="0" boardRot="-1000000" circRot="4.150151425066471e-322" labelx="-16" Show_id="false"/>
 
-Unique  Id: SerialTerm-2135: 
-Circuit Id: SerialTerm-2135
-<item objectName="SerialTerm-2135" labely="-24" vflip="1" Mcu_Uart="1" posx="0" labelrot="0" hflip="1" posy="0" boardPos="-1e+06,-1e+06" valLabely="0" y="-356" Mcu_Id="atmega328-4" circPos="0,0" itemtype="SerialTerm" sizey="251" id="SerialTerm-2135" valLabRot="0" x="-360" valLabelx="0" mainComp="false" rotation="0" boardRot="-1000000" circRot="0" labelx="-16" sizex="530" Show_id="false"/>
-
 Unique  Id: Connector-10: 
 Circuit Id: Connector-10
 <item objectName="Connector-10" labely="-24" vflip="1" endpinid="Node-11-0" labelrot="0" enodeid="Circ_eNode-1991" hflip="1" pointList="-504,-256,-504,-272" boardPos="-1e+06,-1e+06" valLabely="0" y="-256" circPos="0,0" itemtype="Connector" id="Connector-10" startpinid="Ground-9-Gnd" valLabRot="0" x="-504" valLabelx="0" mainComp="false" rotation="0" boardRot="-1000000" circRot="1.551418301273715e-316" labelx="-16" Show_id="false"/>
