@@ -17,8 +17,8 @@
 #include <avr/eeprom.h>
 
 //Variáveis globais
-uint8_t palheta         = 0;
-uint8_t farol           = 0;
+uint8_t palheta = 0;
+uint8_t farol = 0;
 uint8_t temperatura_ant   = 0;
 uint8_t temperatura_atual;
 uint8_t motor;
@@ -135,13 +135,7 @@ void executa_a_cada_1_segundo(uint32_t TEMPO_100us)
         {
             temperatura_ant = temperatura_atual;
             eeprom_write_byte((uint8_t *)8, temperatura_atual);
-        }
-        if(palheta==1)
-            PORTD = PORTD ^ 0b00100000;
-        if(farol == 1)
-            PORTC = PORTC | 0b00001000;
-        else 
-            PORTC = PORTC & 0b11110111;    
+        }    
 
 
     }
@@ -194,6 +188,19 @@ ISR(PCINT2_vect)
 {
     if((PIND & 0b00010000) == 0b00010000)
         cont_pos += 1;
+    if((PIND & 0b00100000) == 0b00000000) 
+    {
+        if(palheta == 0)
+        {
+            USART_Transmit('p');
+            palheta = 1;
+        }
+        else 
+        {
+            USART_Transmit('o');
+            palheta = 0;
+        }
+    } 
 }
 ISR(TIMER2_COMPA_vect)
 {
@@ -237,22 +244,7 @@ ISR(USART_RX_vect)
         recebido = eeprom_read_byte((const uint8_t *)8);
         USART_Transmit(recebido);
     }
-    if(recebido == 'p')
-    {
-        palheta = 1;
-    }
-    if(recebido == 'o')
-    {
-        palheta = 0;
-    }
-    if(recebido == 'f')
-    {
-        farol = 1;
-    }
-    if(recebido == 'e')
-    {
-        farol = 0;
-    }
+
 }  
 
 //******************************************************
@@ -269,7 +261,7 @@ int main(void)
     //habilitar pinos D como entrada
     DDRD   = 0b00000000;
     //habilita resitores de pull-up
-    PORTD  = 0b00001100;
+    PORTD  = 0b00101100;
     //Configuração TC0 - Timer 0
     TCCR0A = 0b10000011;//TC0 em operação CTC
     TCCR0B = 0b00000011;//TC0 prescaler=8. 
@@ -295,7 +287,7 @@ int main(void)
     UBRR0H = (unsigned char)(MYUBRR>>8);
     UBRR0L = (unsigned char)MYUBRR;
     UCSR0B = (1<<RXCIE0)|(1<<RXEN0)|(1<<TXEN0);
-    UCSR0C = (1<<USBS0)|(3<<UCSZ00);
+    UCSR0C = (3<<UCSZ00);
     //habilita as interrupções
     sei();
     diametro_pneu = eeprom_read_word((const uint16_t *)0);

@@ -1,12 +1,15 @@
-separador_digitos:
-	gcc test_separador_digitos.c -o test_separador_digitos.exe
-	./test_separador_digitos.exe
-compile:    
-	avr-gcc -g -Os -mmcu=atmega328 -c main.c
-	avr-gcc -g -mmcu=atmega328p -o main.elf main.o
-	avr-objcopy -j .text -j .data -O ihex main.elf main.hex	
+compile_master:    
+	avr-gcc -g -Os -mmcu=atmega328 -c master/master.c
+	avr-gcc -g -mmcu=atmega328p -o master/master.elf master.o
+	avr-objcopy -j .text -j .data -O ihex master/master.elf master/master.hex	
+compile_slave:    
+	avr-gcc -g -Os -mmcu=atmega328 -c slave/slave.c
+	avr-gcc -g -mmcu=atmega328p -o slave/slave.elf slave.o
+	avr-objcopy -j .text -j .data -O ihex slave/slave.elf slave/slave.hex	
 clear:
-	-rm main.o
-	-rm main.elf
-	-rm main.hex
-	-rm test_separador_digitos.exe
+	-rm master.o
+	-rm master/master.elf
+	-rm master/master.hex
+	-rm slave.o
+	-rm slave/slave.elf
+	-rm slave/slave.hex
